@@ -1,19 +1,43 @@
 @extends('layout.master')
 
+@section('title')
+    {{ __('Laravel') }}
+@endsection
+
 @section('content')
-<div class="col-md-8">
-  <h3 class="pb-4 mb-4 fst-italic border-bottom">
-    Список статей
-  </h3>
+    <div class="col-md-8">
+        <h3 class="pb-4 mb-4 fst-italic border-bottom">
+            Список статей
+        </h3>
 
-  @foreach ($articles as $article)
-    @include('articles.item')
-  @endforeach
+        @foreach ($articles as $article)
+            @include('articles.item')
+        @endforeach
 
-  <nav class="blog-pagination" aria-label="Pagination">
-    <a class="btn btn-outline-primary rounded-pill" href="#">Older</a>
-    <a class="btn btn-outline-secondary rounded-pill disabled">Newer</a>
-  </nav>
+        {{-- @if (session('status'))
+            <div class="alert alert-success">
+                {{ 'Статья "' . session('status') . '"' . ' успешно обновлена!' }}
+            </div>
+        @endif --}}
 
-</div>
+    </div>
+
+    <script src="https://js.pusher.com/7.1/pusher.min.js"></script>
+    <script>
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('061d51597c5f01e35ee2', {
+            cluster: 'eu',
+        });
+
+        var channel = pusher.subscribe('my-channel')
+
+        channel.bind("my-event", function(data) {
+            alert(data);
+        })
+
+        channel.bind("pusher:subscription_succeeded", () => {
+            
+        });
+    </script>
 @endsection
