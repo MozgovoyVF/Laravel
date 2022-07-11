@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Articles;
+use App\Events\UpdateEvent;
+use App\Http\Requests\ArticlesCreateRequest;
+use App\Http\Requests\ArticlesUpdateRequest;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
@@ -12,21 +15,51 @@ class ArticlesController extends Controller
         return view('articles.create');
     }
 
-    public function show(Articles $article)
+    public function show(Article $article)
     {
         return view('articles.show', compact('article'));
     }
 
-    public function store()
+    public function store(ArticlesCreateRequest $request)
     {
-        $this->validate(request(), [
-            'code' => 'bail|required|unique:articles|max:20|regex:/^[0-9A-Za-z_-]+$/i',
-            'title' => 'required|min:5|max:100',
-            'description' => 'required|max:255',
-            'content' => 'required',
-        ]);
+        $validate = $request->validated();
+        $published = $request->boolean('published');
+        
+        $validate['published'] = (int) $published;
 
-        Articles::create(request()->all());
+        Article::create($validate);
+
+        flash()->overlay('Статья "' . $validate['title'] . '" успешно создана', 'Успешно!');
+
+        return redirect('/');
+    }
+
+    public function edit(Article $article)
+    {
+        return view('articles.edit', compact('article'));
+    }
+
+    public function update(ArticlesUpdateRequest $request, Article $article)
+    {
+        $validate = $request->validated();
+        $published = $request->boolean('published');
+        
+        $validate['published'] = (int) $published;
+
+        $article->update($validate);
+
+        event(new UpdateEvent($validate));
+
+        flash()->overlay('Статья "' . $validate['title'] . '" успешно обновлена', 'Успешно!');
+
+        return redirect('/');
+    }
+
+    public function destroy(Article $article)
+    {
+        $article->delete();
+
+        flash()->overlay('Статья "' . $article->title . '" успешно удалена', 'Успешно!');
 
         return redirect('/');
     }
