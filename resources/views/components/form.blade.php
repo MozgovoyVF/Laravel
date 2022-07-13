@@ -1,6 +1,6 @@
 <div>
     @props(['method', 'action', 'type', 'article'])
-    <form method="POST" action="{{ $action }}">
+    <form method="POST" id="form" action="{{ $action }}">
         @csrf
         @method($method)
 
@@ -28,6 +28,7 @@
                 placeholder="Введите текст статьи"
                 value="@if(old('content')) {{ trim(old('content')) }} @else{{ trim(@$article->content) }}@endif">
         </div>
+        {{$slot}}
         <div class="mb-3 form-check">
             <input type="checkbox" name="published" class="form-check-input" id="inputPublished"
                 @if (old('published')) {{ old('published') ? 'checked' : '' }}

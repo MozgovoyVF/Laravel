@@ -27,3 +27,7 @@ Route::delete('/articles/{article:code}', 'App\Http\Controllers\ArticlesControll
 Route::get('/articles/{article:code}/edit', 'App\Http\Controllers\ArticlesController@edit')->name('article.edit');
 
 
+
+Route::get('/articles/tags/{tag:name}', 'App\Http\Controllers\TagsController@index')->name('article.tags.index');
+
+
