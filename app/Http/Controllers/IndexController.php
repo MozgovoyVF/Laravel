@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Articles;
+use App\Models\Article;
 use App\Models\Messages;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        $articles = Articles::latest()->where(['published' => true])->get();
+        $articles = Article::latest()->where(['published' => true])->get();
 
         return view('index', compact('articles'));
     }
