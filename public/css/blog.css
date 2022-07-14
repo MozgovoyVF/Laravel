@@ -170,13 +170,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .messages__email {
-  flex: 0 0 400px;
+  flex: 0 0 300px;
 }
 
 .messages__content {
-  flex: 0 0 400px;
+  flex: 0 0 300px;
 }
 
 .messages__created {
-  flex: 0 0 400px;
+  flex: 0 0 300px;
 }
