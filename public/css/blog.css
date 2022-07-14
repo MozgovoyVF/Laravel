@@ -180,3 +180,19 @@ h1, h2, h3, h4, h5, h6 {
 .messages__created {
   flex: 0 0 300px;
 }
+
+.btn-primary {
+  background-color: rgb(13, 110, 253);
+}
+
+.btn-danger {
+  background-color: rgb(187, 45, 59);
+}
+
+.badge-secondary {
+  color: rgb(187, 45, 59);
+}
+
+.active:not(.btn) {
+  color: rgb(13, 110, 253) !important;
+}
