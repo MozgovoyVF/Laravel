@@ -1,0 +1,32 @@
+@extends('layout.without_sidebar')
+
+@section('content')
+    <x-auth-card>
+        <div class="mb-4 text-sm text-gray-600">
+            {{ __('Забыли свой пароль? Без проблем. Просто сообщите нам ваш адрес электронной почты, и мы отправим вам ссылку с сбросом пароля, которая позволит вам выбрать новый.') }}
+        </div>
+
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4" :status="session('status')" />
+
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
+        <form method="POST" action="{{ route('password.email') }}">
+            @csrf
+
+            <!-- Email Address -->
+            <div>
+                <x-label for="email" :value="__('Email')" />
+
+                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+            </div>
+
+            <div class="flex items-center justify-end mt-4">
+                <x-button>
+                    {{ __('Ссылка на сброс пароля электронной почты') }}
+                </x-button>
+            </div>
+        </form>
+    </x-auth-card>
+@endsection

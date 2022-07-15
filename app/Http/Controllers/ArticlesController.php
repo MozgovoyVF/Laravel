@@ -10,6 +10,7 @@ use App\Models\Tag;
 use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 
 class ArticlesController extends Controller
 {
@@ -29,6 +30,8 @@ class ArticlesController extends Controller
         $published = $request->boolean('published');
 
         $validate['published'] = (int) $published;
+        $validate['user_id'] = auth()->id();
+
         $validate = Arr::except($validate, 'tags');
 
         $article = Article::create($validate);
@@ -46,6 +49,10 @@ class ArticlesController extends Controller
 
     public function edit(Article $article)
     {
+        if (Gate::none(['update', 'delete'], $article)) {
+            abort(403);
+        }
+
         return view('articles.edit', compact('article'));
     }
 
