@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="{{mix('/css/main.css')}}">
 
-    <title>@yield('title')</title>
+    <title>Админка - @yield('title')</title>
 </head>
 
 <body>
     <div class="wrapper">
-        @include('layout.header')
+        @include('layout.admin_header')
 
         <div class="container main__container">
             <div class="row g-5">
@@ -27,7 +27,7 @@
         </div>
 
 
-        @include('layout.footer')
+        @include('layout.admin_footer')
         
     </div>
 </body>

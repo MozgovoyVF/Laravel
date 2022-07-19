@@ -9,7 +9,15 @@
 <div class="col-md-8">
   <h3 class="pb-4 mb-4 fst-italic border-bottom text-lg">
     {{$article->title}}
+    {{-- @admin
+      <a href="{{route('admin.article.show', ['article' => $article->code])}}/edit" class="text-sm text-red-500">Редактировать статью</a>
+    @endadmin
     @canany(['update', 'delete'], $article)
+      <a href="{{route('article.show', ['article' => $article->code])}}/edit" class="text-sm text-red-500">Редактировать статью</a>
+    @endcanany --}}
+    @canany(['admin'])
+      <a href="{{route('admin.article.show', ['article' => $article->code])}}/edit" class="text-sm text-red-500">Редактировать статью</a>
+    @elsecanany(['update', 'delete'], $article)
       <a href="{{route('article.show', ['article' => $article->code])}}/edit" class="text-sm text-red-500">Редактировать статью</a>
     @endcanany
   </h3>

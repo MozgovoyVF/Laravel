@@ -4,13 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Messages;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        $articles = Article::latest()->where(['published' => true])->get();
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            $articles = Article::latest()->get();
+        } else {
+            $articles = Article::latest()->where(['published' => true])->get();
+
+            if (auth()->check()) {
+                $articlesHidden = auth()->user()->articles()->where(['published' => false])->get();
+                $articles = $articles->merge($articlesHidden);
+            }
+        }
+
+        $articles = $articles->sortBy(
+            ['published', 'desc'],
+            ['created_at', 'asc'],
+        );
 
         return view('index', compact('articles'));
     }

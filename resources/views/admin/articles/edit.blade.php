@@ -1,34 +1,44 @@
-@extends('layout.master')
+@extends('layout.admin')
 
 @section('title')
-    Создание статьи
+    {{ __('Редактирование статьи') }}
 @endsection
 
 @section('content')
     <div class="col-md-8">
         <h3 class="pb-4 mb-4 fst-italic border-bottom">
-            Создание статьи
+            Редактировние статьи
         </h3>
 
         @include('layout.errors')
 
-        <x-form action="{{ route('article.store') }}" article="null" method="POST" type="Создать статью">
+        <x-form action="{{ route('article.update', ['article' => $article->code]) }}" :article="$article" method="PATCH"
+            type="Изменить статью">
             <div class="tags__container">
-                @if (old('tags'))
-                    @foreach (old('tags') as $tag)
+                @if ($article->tags ?? old('tags'))
+                    @php
+                        $tags = $article->tags ?? old('tags')
+                    @endphp
+                    @foreach ($tags as $tag)
                         @if ($loop->index === 0)
                             <label for="inputTag{{ $loop->index }}" id="labelTag" class="form-label">Список тегов</label>
                         @endif
                         <input type="text" class="form-control mb-3" name="tags[]" id="inputTag{{ $loop->index }}"
-                            placeholder="Введите название тега" value="{{ $tag }}">
+                            placeholder="Введите название тега" value="@php $tag = $tag->name ?? $tag; echo $tag @endphp">
                     @endforeach
                 @endif
             </div>
             <button type="button" id="tagBtn" class="btn btn-primary mb-3">Добавить тег</button>
-            <button @disabled(!old('tags')) type="button" id="tagBtnDelete" class="btn btn-danger mb-3">Удалить
+            <button @disabled($article->tags->count() === 0) type="button" id="tagBtnDelete" class="btn btn-danger mb-3">Удалить
                 тег</button>
         </x-form>
 
+        <form action="{{ route('article.destroy', ['article' => $article->code]) }}" method="post">
+            @csrf
+            @method('DELETE')
+            <button type="submit" onclick="confirm('Вы уверены, что хотите удалить статью?')"
+                class="btn btn-danger mb-3">Удалить статью</button>
+        </form>
     </div>
 @endsection
 
