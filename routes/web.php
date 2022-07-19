@@ -21,6 +21,8 @@ Route::get('/contacts', 'App\Http\Controllers\IndexController@contacts');
 Route::get('/admin/feedback', 'App\Http\Controllers\AdminController@feedback');
 
 
+Route::redirect('/articles', '/');
+
 Route::post('/articles', 'App\Http\Controllers\ArticlesController@store')->name('article');
 
 Route::get('/articles/create', 'App\Http\Controllers\ArticlesController@create')->middleware('auth')->name('article.create');
