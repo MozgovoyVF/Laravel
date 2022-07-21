@@ -7,6 +7,8 @@ use App\Http\Requests\ArticlesCreateRequest;
 use App\Http\Requests\ArticlesUpdateRequest;
 use App\Models\Article;
 use App\Models\Tag;
+use App\Models\User;
+use App\Notifications\ArticlesChanges;
 use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -44,6 +46,8 @@ class ArticlesController extends Controller
 
         flash()->overlay('Статья "' . $validate['title'] . '" успешно создана', 'Успешно!');
 
+        User::where(['id' => 3])->first()->notify(new ArticlesChanges($article));
+
         return redirect('/');
     }
 
@@ -68,7 +72,7 @@ class ArticlesController extends Controller
         $tags = $request->collect('tags')->keyBy(function ($item) {
             return $item;
         });;
-
+        
         $articleTags = $article->tags->keyBy('name');
 
         $syncTags = collect($articleTags->intersectByKeys($tags));
@@ -82,6 +86,8 @@ class ArticlesController extends Controller
 
         event(new UpdateEvent($validate));
 
+        User::where(['id' => 3])->first()->notify(new ArticlesChanges($article));
+
         flash()->overlay('Статья "' . $validate['title'] . '" успешно обновлена', 'Успешно!');
 
         return redirect('/');
@@ -90,6 +96,8 @@ class ArticlesController extends Controller
     public function destroy(Article $article)
     {
         $article->delete();
+
+        User::where(['id' => 3])->first()->notify(new ArticlesChanges($article));
 
         flash()->overlay('Статья "' . $article->title . '" успешно удалена', 'Успешно!');
 

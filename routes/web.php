@@ -13,9 +13,10 @@ Route::get('/about', 'App\Http\Controllers\IndexController@about');
 
 Route::get('/contacts', 'App\Http\Controllers\IndexController@contacts');
 
-
 Route::group(['prefix'=>'articles','as'=>'article.'], function() {
     Route::get('/', function () {return redirect()->route('index');});
+
+Route::redirect('/articles', '/');
 
     Route::post('/', 'App\Http\Controllers\ArticlesController@store')->name('store');
 
