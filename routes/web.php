@@ -2,10 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 require __DIR__.'/auth.php';
 
 
@@ -17,23 +13,26 @@ Route::get('/about', 'App\Http\Controllers\IndexController@about');
 
 Route::get('/contacts', 'App\Http\Controllers\IndexController@contacts');
 
-
-Route::get('/admin/feedback', 'App\Http\Controllers\AdminController@feedback');
-
+Route::group(['prefix'=>'articles','as'=>'article.'], function() {
+    Route::get('/', function () {return redirect()->route('index');});
 
 Route::redirect('/articles', '/');
 
-Route::post('/articles', 'App\Http\Controllers\ArticlesController@store')->name('article');
+    Route::post('/', 'App\Http\Controllers\ArticlesController@store')->name('store');
 
-Route::get('/articles/create', 'App\Http\Controllers\ArticlesController@create')->middleware('auth')->name('article.create');
+    Route::get('/create', 'App\Http\Controllers\ArticlesController@create')->middleware('auth')->name('create');
+    
+    Route::get('/{article:code}', 'App\Http\Controllers\ArticlesController@show')->name('show');
+    
+    Route::patch('/{article:code}', 'App\Http\Controllers\ArticlesController@update')->name('update');
+    
+    Route::delete('/{article:code}', 'App\Http\Controllers\ArticlesController@destroy')->name('destroy');
+    
+    Route::get('/{article:code}/edit', 'App\Http\Controllers\ArticlesController@edit')->name('edit');
+    
+    
+    Route::get('/tags/{tag:name}', 'App\Http\Controllers\TagsController@index')->name('tags.index');
+});
 
-Route::get('/articles/{article:code}', 'App\Http\Controllers\ArticlesController@show')->name('article.show');
-
-Route::patch('/articles/{article:code}', 'App\Http\Controllers\ArticlesController@update')->name('article.update');
-
-Route::delete('/articles/{article:code}', 'App\Http\Controllers\ArticlesController@destroy')->name('article.destroy');
-
-Route::get('/articles/{article:code}/edit', 'App\Http\Controllers\ArticlesController@edit')->name('article.edit');
 
 
-Route::get('/articles/tags/{tag:name}', 'App\Http\Controllers\TagsController@index')->name('article.tags.index');

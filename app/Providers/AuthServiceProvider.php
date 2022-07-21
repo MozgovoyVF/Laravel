@@ -24,7 +24,18 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        
+        Gate::before(function() {
+            if (auth()->check() && auth()->user()->isAdmin()) {
+                return true;
+            }
+        });
 
+        Gate::define('admin', function() {
+            if (auth()->check() && auth()->user()->isAdmin()) {
+                return true;
+            }
+        });
         Gate::define('update', [ArticlePolicy::class, 'update']);
         Gate::define('delete', [ArticlePolicy::class, 'delete']);
     }

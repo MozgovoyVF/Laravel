@@ -182,15 +182,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  background-color: rgb(13, 110, 253);
+  background-color: rgb(13, 110, 253) !important;
 }
 
 .btn-danger {
-  background-color: rgb(187, 45, 59);
+  background-color: rgb(187, 45, 59) !important;
 }
 
 .badge-secondary {
-  color: rgb(187, 45, 59);
+  color: rgb(187, 45, 59) !important;
 }
 
 .active:not(.btn) {
