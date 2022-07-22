@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('app:send_notify 7')->weeklyOn(1, '12:00');
+        // $schedule->command('app:sendNotify 7')->everyMinute();
     }
 
     /**
