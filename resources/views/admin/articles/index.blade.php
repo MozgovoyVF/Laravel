@@ -1,7 +1,7 @@
 @extends('layout.admin')
 
 @section('title')
-    {{ __('Laravel') }}
+    {{ __('Все статьи') }}
 @endsection
 
 @section('content')

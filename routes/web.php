@@ -9,9 +9,9 @@ Route::get('/', 'App\Http\Controllers\IndexController@index')->name('index');
 
 Route::post('/', 'App\Http\Controllers\IndexController@store');
 
-Route::get('/about', 'App\Http\Controllers\IndexController@about');
+Route::get('/about', 'App\Http\Controllers\IndexController@about')->name('about');
 
-Route::get('/contacts', 'App\Http\Controllers\IndexController@contacts');
+Route::get('/contacts', 'App\Http\Controllers\IndexController@contacts')->name('contacts');
 
 Route::group(['prefix'=>'articles','as'=>'article.'], function() {
     Route::get('/', function () {return redirect()->route('index');});

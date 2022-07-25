@@ -61,12 +61,12 @@
     
     <div class="nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-start">
-            <a class="p-2 link-secondary {{request()->is('/') ? 'active' : ''}}" href="/">Главная</a>
-            <a class="p-2 link-secondary {{request()->is('about') ? 'active' : ''}}" href="/about">О нас</a>
-            <a class="p-2 link-secondary {{request()->is('contacts') ? 'active' : ''}}" href="/contacts">Контакты</a>
-            <a class="p-2 link-secondary {{request()->is('articles/create') ? 'active' : ''}}" href="/articles/create">Создать статью</a>
+            <a class="p-2 link-secondary {{request()->is('/') ? 'active' : ''}}" href="{{route('index')}}">Главная</a>
+            <a class="p-2 link-secondary {{request()->is('about') ? 'active' : ''}}" href="{{route('about')}}">О нас</a>
+            <a class="p-2 link-secondary {{request()->is('contacts') ? 'active' : ''}}" href="{{route('contacts')}}">Контакты</a>
+            <a class="p-2 link-secondary {{request()->is('articles/create') ? 'active' : ''}}" href="{{route('article.create')}}">Создать статью</a>
             @admin
-            <a class="p-2 link-secondary {{request()->is('admin/*') ? 'active' : ''}}" href="/admin/feedback">Админ. раздел</a>
+            <a class="p-2 link-secondary {{request()->is('admin/*') ? 'active' : ''}}" href="{{route('admin.article.index')}}">Админ. раздел</a>
             @endadmin
         </nav>
     </div>

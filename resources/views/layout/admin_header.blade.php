@@ -55,7 +55,7 @@
             <a class="p-2 link-secondary {{request()->is('/') ? 'active' : ''}}" href="{{route('index')}}">Главная сайта</a>
             <a class="p-2 link-secondary {{request()->is('articles/create') ? 'active' : ''}}" href="{{route('article.create')}}">Создать статью</a>
             <a class="p-2 link-secondary {{request()->is('admin/feedback') ? 'active' : ''}}" href="{{route('admin.feedback')}}">Запросы</a>
-            <a class="p-2 link-secondary {{request()->is('admin/articles/*') ? 'active' : ''}}" href="{{route('admin.article.index')}}">Все статьи</a>
+            <a class="p-2 link-secondary {{request()->is('admin/articles') ? 'active' : ''}}" href="{{route('admin.article.index')}}">Все статьи</a>
 
         </nav>
     </div>
