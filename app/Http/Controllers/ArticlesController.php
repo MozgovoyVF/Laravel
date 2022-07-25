@@ -6,9 +6,9 @@ use App\Events\UpdateEvent;
 use App\Http\Requests\ArticlesCreateRequest;
 use App\Http\Requests\ArticlesUpdateRequest;
 use App\Models\Article;
-use App\Models\Tag;
 use App\Models\User;
 use App\Notifications\ArticlesChanges;
+use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -26,7 +26,7 @@ class ArticlesController extends Controller
         return view('articles.show', compact('article'));
     }
 
-    public function store(ArticlesCreateRequest $request)
+    public function store(ArticlesCreateRequest $request, Pushall $pushall)
     {
         $validate = $request->validated();
         $published = $request->boolean('published');
@@ -43,6 +43,7 @@ class ArticlesController extends Controller
         });
 
         app(TagsSynchronizer::class)->sync($tags, $article);
+        $pushall->send('Статья "' . $article->title . '" создана в ' . $article->created_at);
 
         flash()->overlay('Статья "' . $validate['title'] . '" успешно создана', 'Успешно!');
 

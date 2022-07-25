@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticlesUpdateRequest;
 use App\Models\Article;
 use App\Models\Messages;
+use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -67,6 +68,7 @@ class IndexController extends Controller
         $article->update($validate);
 
         app(TagsSynchronizer::class)->sync($tagsMerged, $article);
+        app(Pushall::class)->send('Статья ' . $article->title . ' создана в ' . $article->created_at);
 
         event(new UpdateEvent($validate));
 
