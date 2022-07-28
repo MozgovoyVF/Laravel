@@ -23,6 +23,8 @@ class ArticlesController extends Controller
 
     public function show(Article $article)
     {
+        $article->load('comments');
+        // dd($article->comments);
         return view('articles.show', compact('article'));
     }
 
