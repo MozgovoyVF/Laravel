@@ -198,6 +198,7 @@ return [
         App\Providers\RolesServiceProvider::class,
 
         App\Providers\TelescopeServiceProvider::class,
+        App\Providers\PushallServiceProvider::class,
 
 
         Laracasts\Flash\FlashServiceProvider::class
