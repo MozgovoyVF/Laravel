@@ -38,3 +38,9 @@ Route::group(['prefix' => 'articles', 'as' => 'article.'], function () {
 
     Route::post('/{article:code}/comments', 'App\Http\Controllers\CommentsController@store')->middleware('auth')->name('comments.store');
 });
+
+Route::group(['prefix' => 'news', 'as' => 'news.'], function () {
+    Route::get('/', 'App\Http\Controllers\NewsController@index')->name('index');
+
+    Route::get('/{news:id}', 'App\Http\Controllers\NewsController@show')->name('show');
+});
