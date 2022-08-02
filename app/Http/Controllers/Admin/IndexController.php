@@ -17,12 +17,7 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $articles = Article::latest()->get();
-
-        $articles = $articles->sortBy(
-            ['published', 'desc'],
-            ['created_at', 'asc'],
-        );
+        $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->simplePaginate(20);
 
         return view('admin/articles/index', compact('articles'));
     }

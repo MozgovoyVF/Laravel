@@ -13,20 +13,19 @@ class IndexController extends Controller
     public function index()
     {
         if (auth()->check() && auth()->user()->isAdmin()) {
-            $articles = Article::latest()->get();
+            $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->simplePaginate(20);
         } else {
-            $articles = Article::latest()->where(['published' => true])->get();
-
             if (auth()->check()) {
-                $articlesHidden = auth()->user()->articles()->where(['published' => false])->get();
-                $articles = $articles->merge($articlesHidden);
+                $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')
+                    ->where('published', true)
+                    ->orWhere(function ($query) {
+                        $query->where('user_id', auth()->id())
+                            ->where('published', false);
+                    })->simplePaginate(10);
+            } else {
+                $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->where(['published' => true])->simplePaginate(10);
             }
         }
-
-        $articles = $articles->sortBy(
-            ['published', 'desc'],
-            ['created_at', 'asc'],
-        );
 
         return view('index', compact('articles'));
     }
