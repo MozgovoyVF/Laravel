@@ -12,16 +12,20 @@ class Comment extends Model
     protected $fillable = [
         'message',
         'user_id',
-        'article_id'
     ];
 
     public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
-    public function article()
+    public function articles()
     {
-        $this->belongsTo(Article::class);
+        return $this->morphedByMany(Article::class, 'commentable');
+    }
+
+    public function news()
+    {
+        return $this->morphedByMany(News::class, 'commentable');
     }
 }

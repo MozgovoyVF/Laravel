@@ -30,12 +30,12 @@ class Article extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function comments()
     {
-        return $this->belongsToMany(User::class, 'comments')->withPivot(['message'])->withTimestamps();
+        return $this->morphToMany(Comment::class, 'commentable');
     }
 
     public function history()

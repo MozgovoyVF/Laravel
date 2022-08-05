@@ -26,7 +26,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('layout.sidebar', function ($view) {
-            $view->with('tagsCloud', \App\Models\Tag::tagsCloude());
+            $view->with('tagsCloud', \App\Models\Tag::tagsArticlesCloude());
+        });
+
+        view()->composer('layout.sidebar', function ($view) {
+            $view->with('tagsNewsCloud', \App\Models\Tag::tagsNewsCloude());
         });
 
         Paginator::defaultSimpleView('pagination::simple-tailwind');

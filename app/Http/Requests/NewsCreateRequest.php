@@ -29,6 +29,8 @@ class NewsCreateRequest extends FormRequest
             'title' => ['required', 'min:5', 'max:100'],
             'description' => ['required', 'max:255'],
             'content' => ['required'],
+            "tags"    => ['array'],
+            "tags.*"  => ['string','distinct','min:3','regex:/^[a-zA-Zа-ЯА-Я0-9]/i'],
         ];
     }
 
@@ -41,6 +43,10 @@ class NewsCreateRequest extends FormRequest
             'description.required' => 'Поле "Краткое описание" обязательно для заполнения',
             'description.min' => 'Поле "Краткое описание" не должно превышать 255 символов',
             'content.required' => 'Поле "Содержание" обязательно для заполнения',
+            'tags.*.distinct' => 'Поле "Название тега" не должно дублироваться',
+            'tags.*.string' => 'Поле "Название тега" не должно быть пустым',
+            'tags.*.min' => 'Поле "Название тега" не должно содержать менее 3 символов',
+            'tags.*.regex' => 'Поле "Название тега" может содержать только цифры, латинские и русские буквы без пробелов',
         ];
     }
 }

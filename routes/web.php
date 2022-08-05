@@ -13,6 +13,8 @@ Route::get('/about', 'App\Http\Controllers\IndexController@about')->name('about'
 
 Route::get('/contacts', 'App\Http\Controllers\IndexController@contacts')->name('contacts');
 
+Route::get('/interesting', 'App\Http\Controllers\IndexController@interesting')->name('interesting');
+
 Route::group(['prefix' => 'articles', 'as' => 'article.'], function () {
     Route::get('/', function () {
         return redirect()->route('index');
@@ -33,14 +35,18 @@ Route::group(['prefix' => 'articles', 'as' => 'article.'], function () {
     Route::get('/{article:code}/edit', 'App\Http\Controllers\ArticlesController@edit')->name('edit');
 
 
-    Route::get('/tags/{tag:name}', 'App\Http\Controllers\TagsController@index')->name('tags.index');
+    Route::get('/tags/{tag:name}', 'App\Http\Controllers\TagsController@articles')->name('tags.index');
 
 
-    Route::post('/{article:code}/comments', 'App\Http\Controllers\CommentsController@store')->middleware('auth')->name('comments.store');
+    Route::post('/{article:code}/comments', 'App\Http\Controllers\CommentsController@article')->middleware('auth')->name('comments.store');
 });
 
 Route::group(['prefix' => 'news', 'as' => 'news.'], function () {
     Route::get('/', 'App\Http\Controllers\NewsController@index')->name('index');
 
     Route::get('/{news:id}', 'App\Http\Controllers\NewsController@show')->name('show');
+
+    Route::get('/tags/{tag:name}', 'App\Http\Controllers\TagsController@news')->name('tags.index');
+
+    Route::post('/{news:id}/comments', 'App\Http\Controllers\CommentsController@news')->middleware('auth')->name('comments.store');
 });

@@ -15,4 +15,14 @@ class News extends Model
         'description',
         'content'
     ];
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    public function comments()
+    {
+        return $this->morphToMany(Comment::class, 'commentable');
+    }
 }

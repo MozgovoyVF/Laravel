@@ -6,6 +6,7 @@ use App\Events\UpdateEvent;
 use App\Http\Requests\ArticlesCreateRequest;
 use App\Http\Requests\ArticlesUpdateRequest;
 use App\Models\Article;
+use App\Models\Comment;
 use App\Models\User;
 use App\Notifications\ArticlesChanges;
 use App\Services\Pushall;
@@ -23,8 +24,9 @@ class ArticlesController extends Controller
 
     public function show(Article $article)
     {
-        $article->load('comments');
-        // dd($article->comments);
+        $article->loadMorph('commentable', [
+            Comment::class => ['user']
+        ]);
         return view('articles.show', compact('article'));
     }
 

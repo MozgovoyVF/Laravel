@@ -11,7 +11,12 @@ class Tag extends Model
 
     public function articles()
     {
-        return $this->belongsToMany(Article::class);
+        return $this->morphedByMany(Article::class, 'taggable');
+    }
+
+    public function news()
+    {
+        return $this->morphedByMany(News::class, 'taggable');
     }
 
     public function getRouteKeyName()
@@ -19,9 +24,14 @@ class Tag extends Model
         return 'name';
     }
 
-    public static function tagsCloude()
+    public static function tagsArticlesCloude()
     {
         return (new static)->has('articles')->get();
+    }
+
+    public static function tagsNewsCloude()
+    {
+        return (new static)->has('news')->get();
     }
 
     use HasFactory;
