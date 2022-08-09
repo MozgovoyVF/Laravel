@@ -58,6 +58,7 @@
             <a class="p-2 link-secondary {{request()->is('admin/articles') ? 'active' : ''}}" href="{{route('admin.article.index')}}">Все статьи</a>
             <a class="p-2 link-secondary @linkactive('admin/news*') " href="{{route('admin.news.index')}}">Все новости</a>
             <a class="p-2 link-secondary @linkactive('admin/news/create') " href="{{route('admin.news.create')}}">Создать новость</a>
+            <a class="p-2 link-secondary @linkactive('admin/reports/') " href="{{route('admin.reports.index')}}">Отчеты</a>
         </nav>
     </div>
 </div>
