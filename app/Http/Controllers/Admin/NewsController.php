@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewsCreateRequest;
 use App\Models\News;
+use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
@@ -37,6 +38,19 @@ class NewsController extends Controller
 
         $news->update($validate);
 
+        $tags = $request->collect('tags')->keyBy(function ($item) {
+            return $item;
+        });;
+        
+        $newsTags = $news->tags->keyBy('name');
+
+        $syncTags = collect($newsTags->intersectByKeys($tags));
+        $tagsToAttach = $tags->diffKeys($newsTags);
+
+        $tagsMerged = $syncTags->merge($tagsToAttach);
+
+        app(TagsSynchronizer::class)->sync($tagsMerged, $news);
+
         flash()->overlay('Статья ' . $news->title . ' успешно обновлена', 'Успешно!');
 
         return redirect(route('admin.news.index'));
@@ -53,7 +67,13 @@ class NewsController extends Controller
 
     public function store(NewsCreateRequest $request)
     {
-        News::create($request->only('title', 'description', 'content'));
+        $tags = $request->collect('tags')->keyBy(function ($item) {
+            return $item;
+        });
+
+        $news = News::create($request->only('title', 'description', 'content'));
+
+        app(TagsSynchronizer::class)->sync($tags, $news);
 
         flash()->overlay('Статья успешно создана', 'Успешно!');
 

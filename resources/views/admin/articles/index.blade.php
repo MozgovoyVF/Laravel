@@ -11,7 +11,7 @@
         </h3>
 
         @foreach ($articles as $article)
-            @include('articles.item')
+            @include('admin.articles.item')
         @endforeach
 
         @include ('flash::message')

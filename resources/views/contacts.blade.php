@@ -16,7 +16,7 @@
             @csrf
 
             <div class="mb-3">
-                <label for="inputEmail" class="form-label">Символьный Ваш email</label>
+                <label for="inputEmail" class="form-label">Ваш email</label>
                 <input type="text" class="form-control" name="email" id="inputEmail"
                     placeholder="Введите email" value="{{ old('email') }}">
             </div>

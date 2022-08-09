@@ -1,5 +1,5 @@
 <article class="blog-post">
-  <a href="/articles/{{$article->code}}" class="blog-post-title mb-1">{{$article->title}}</a>
+  <a href="{{route('admin.article.show', ['article' => $article->code])}}" class="blog-post-title mb-1">{{$article->title}}</a>
 
   <x-published success="{{$article->published}}"/>
 

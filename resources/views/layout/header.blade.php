@@ -66,6 +66,7 @@
             <a class="p-2 link-secondary {{request()->is('contacts') ? 'active' : ''}}" href="{{route('contacts')}}">Контакты</a>
             <a class="p-2 link-secondary {{request()->is('articles/create') ? 'active' : ''}}" href="{{route('article.create')}}">Создать статью</a>
             <a class="p-2 link-secondary {{request()->is('news/*') ? 'active' : ''}}" href="{{route('news.index')}}">Новости</a>
+            <a class="p-2 link-secondary {{request()->is('interesting') ? 'active' : ''}}" href="{{route('interesting')}}">Интересное</a>
             @admin
             <a class="p-2 link-secondary {{request()->is('admin/*') ? 'active' : ''}}" href="{{route('admin.article.index')}}">Админ. раздел</a>
             @endadmin

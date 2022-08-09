@@ -22,6 +22,7 @@
                 placeholder="Введите текст новости"
                 value="@if(old('content')) {{ trim(old('content')) }} @else{{ trim(@$news->content) }}@endif">
         </div>
+        {{$slot}}
         <button type="submit" class="btn btn-primary mb-3">{{ $type }}</button>
     </form>
 </div>
