@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ArticleUpdate;
 use App\Events\UpdateEvent;
 use App\Http\Requests\ArticlesCreateRequest;
 use App\Http\Requests\ArticlesUpdateRequest;
@@ -88,8 +89,6 @@ class ArticlesController extends Controller
         $article->update($validate);
 
         app(TagsSynchronizer::class)->sync($tagsMerged, $article);
-
-        event(new UpdateEvent($validate));
 
         User::where(['id' => 3])->first()->notify(new ArticlesChanges($article));
 

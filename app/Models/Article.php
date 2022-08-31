@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ArticleUpdate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -9,6 +10,10 @@ use Illuminate\Support\Arr;
 class Article extends Model
 {
     public $guarded = [];
+
+    protected $dispatchesEvents = [
+        'updated' => ArticleUpdate::class,
+    ];
 
     protected static function boot()
     {
