@@ -30,4 +30,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
   Route::get('/news/{news:id}', 'App\Http\Controllers\Admin\NewsController@show')->name('news.show');
 
+
+  Route::get('/reports', 'App\Http\Controllers\Admin\ReportsController@index')->name('reports.index');
+
+  Route::post('/reports', 'App\Http\Controllers\Admin\ReportsController@queue')->name('reports.queue');
+
+  Route::get('/reports/total', 'App\Http\Controllers\Admin\ReportsController@total')->name('reports.total');
+
 });
