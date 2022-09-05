@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ArticleUpdate;
 use App\Events\UpdateEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticlesUpdateRequest;
@@ -36,7 +37,6 @@ class IndexController extends Controller
 
     public function edit(Article $article)
     {
-
         return view('admin.articles.edit', compact('article'));
     }
 
