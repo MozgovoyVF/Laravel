@@ -26,6 +26,16 @@ class Article extends Model
                 'after' => json_encode($after)
             ]);
         });
+
+        static::created(function() {
+            cache()->tags(['articles'])->flush();
+        });
+        static::updated(function() {
+            cache()->tags(['articles'])->flush();
+        });
+        static::deleted(function() {
+            cache()->tags(['articles'])->flush();
+        });
     }
 
     public function getRouteKeyName()

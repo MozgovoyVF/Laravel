@@ -12,13 +12,17 @@ use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->simplePaginate(20);
+
+        $articles = Cache::tags(['articles'])->remember('user_articles|' . auth()->id(), 3600, function () {
+            return Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->simplePaginate(20);
+        });
 
         return view('admin/articles/index', compact('articles'));
     }
@@ -32,6 +36,10 @@ class IndexController extends Controller
 
     public function show(Article $article)
     {
+        Cache::tags(['articles'])->remember('article|' . $article->id, 3600, function () use ($article) {
+            return $article;
+        });
+
         return view('admin.articles.show', compact('article'));
     }
 
@@ -78,6 +86,6 @@ class IndexController extends Controller
 
         flash()->overlay('Статья "' . $article->title . '" успешно удалена', 'Успешно!');
 
-        return redirect('/');
+        return redirect('/admin/articles');
     }
 }
