@@ -16,6 +16,21 @@ class News extends Model
         'content'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function() {
+            cache()->tags(['news'])->flush();
+        });
+        static::updated(function() {
+            cache()->tags(['news'])->flush();
+        });
+        static::deleted(function() {
+            cache()->tags(['news'])->flush();
+        });
+    }
+
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');

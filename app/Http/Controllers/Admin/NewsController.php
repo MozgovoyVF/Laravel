@@ -7,18 +7,25 @@ use App\Http\Requests\NewsCreateRequest;
 use App\Models\News;
 use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class NewsController extends Controller
 {
     public function index()
     {
-        $news = News::latest()->simplePaginate(20);
+
+        $news = Cache::tags(['news'])->remember('user_news', 3600, function () {
+            return News::latest()->simplePaginate(20);
+        });
 
         return view('admin.news.index', compact('news'));
     }
 
     public function show(News $news)
     {
+        Cache::tags(['news'])->remember('news|' . $news->id, 3600, function () use ($news) {
+            return $news;
+        });
         return view('admin.news.show', compact('news'));
     }
 

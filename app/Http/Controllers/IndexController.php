@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
@@ -15,20 +16,25 @@ class IndexController extends Controller
     public function index()
     {
         if (auth()->check() && auth()->user()->isAdmin()) {
-            $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->simplePaginate(20);
+            $articles = Cache::tags(['articles'])->remember('user_articles|' . auth()->id(), 3600, function () {
+                return Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->simplePaginate(20);
+            });
         } else {
             if (auth()->check()) {
-                $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')
+                $articles = Cache::tags(['articles'])->remember('user_articles|' . auth()->id(), 3600, function () {
+                    return Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')
                     ->where('published', true)
                     ->orWhere(function ($query) {
                         $query->where('user_id', auth()->id())
                             ->where('published', false);
                     })->simplePaginate(10);
+                });
             } else {
-                $articles = Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->where(['published' => true])->simplePaginate(10);
+                $articles = Cache::tags(['articles'])->remember('user_articles', 3600, function () {
+                    return Article::orderBy('published', 'desc')->orderBy('created_at', 'asc')->where(['published' => true])->simplePaginate(10);
+                });
             }
         }
-
         return view('index', compact('articles'));
     }
 

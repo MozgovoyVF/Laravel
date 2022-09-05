@@ -14,6 +14,7 @@ use App\Services\Pushall;
 use App\Services\TagsSynchronizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 
 class ArticlesController extends Controller
@@ -25,9 +26,12 @@ class ArticlesController extends Controller
 
     public function show(Article $article)
     {
-        $article->loadMorph('commentable', [
-            Comment::class => ['user']
-        ]);
+        $article = Cache::tags(['articles'])->remember('article|' . $article->id, 3600, function () use ($article) {
+            return $article->loadMorph('commentable', [
+                Comment::class => ['user']
+            ]);
+        });
+        
         return view('articles.show', compact('article'));
     }
 
